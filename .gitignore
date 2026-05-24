@@ -1,0 +1,19 @@
+# Dependencies
+client/node_modules
+server/node_modules
+
+server/.env
+client/.env
+
+client/dist
+client/build
+
+*.log
+
+.DS_Store
+Thumbs.db
+
+.vscode
+
+# Package lock optional (usually keep it)
+# package-lock.json
