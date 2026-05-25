@@ -1,0 +1,77 @@
+export const products = [
+  {
+    id: 1,
+    title: 'Wireless Noise-Cancelling Headphones',
+    category: 'Audio',
+    price: 129.99,
+    rating: 4.7,
+    reviews: 261,
+    stock: 24,
+    seller: 'Soundify',
+    image: '/src/assets/hero.png',
+    description:
+      'Experience immersive sound with active noise cancellation, long battery life, and soft ear cushions for all-day comfort.',
+    highlights: [
+      'Up to 30 hours battery life',
+      'Bluetooth 5.2 with multipoint pairing',
+      'Transparent hearing mode',
+      'Foldable travel design',
+    ],
+    specs: {
+      battery: '30 hours',
+      connectivity: 'Bluetooth 5.2',
+      weight: '250g',
+      warranty: '1 year',
+    },
+  },
+  {
+    id: 2,
+    title: 'Smart Fitness Watch',
+    category: 'Wearables',
+    price: 89.99,
+    rating: 4.4,
+    reviews: 180,
+    stock: 12,
+    seller: 'FitPulse',
+    image: '/src/assets/react.svg',
+    description:
+      'Track your workouts, heart rate, sleep, and notifications in one sleek smartwatch with customizable watch faces.',
+    highlights: [
+      '24/7 heart rate monitoring',
+      'Water resistant up to 50m',
+      'Sleep tracking with analysis',
+      'Notifications & music controls',
+    ],
+    specs: {
+      battery: '10 days',
+      display: '1.4-inch AMOLED',
+      connectivity: 'Bluetooth 5.0',
+      warranty: '1 year',
+    },
+  },
+  {
+    id: 3,
+    title: 'Portable Coffee Maker',
+    category: 'Home & Kitchen',
+    price: 59.99,
+    rating: 4.5,
+    reviews: 98,
+    stock: 8,
+    seller: 'BrewMaster',
+    image: '/src/assets/vite.svg',
+    description:
+      'Brew fresh coffee on-the-go with this compact portable maker, designed for travel and busy mornings.',
+    highlights: [
+      'Fast brewing in 5 minutes',
+      'Compact and lightweight',
+      'Easy-clean design',
+      'Compatible with ground coffee and pods',
+    ],
+    specs: {
+      capacity: '350 ml',
+      material: 'Stainless steel',
+      power: '12V USB-C',
+      warranty: '6 months',
+    },
+  },
+]
