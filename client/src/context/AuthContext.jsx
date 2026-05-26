@@ -7,8 +7,10 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(false)
   const [productsLoading, setProductsLoading] = useState(false)
+  const [ordersLoading, setOrdersLoading] = useState(false)
   const [error, setError] = useState(null)
   const [products, setProducts] = useState([])
+  const [orders, setOrders] = useState([])
 
   // Initialize user from localStorage on mount
   useEffect(() => {
@@ -91,12 +93,57 @@ export function AuthProvider({ children }) {
     }
   }
 
+  const makeOrder = async (orderData) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const payload = {
+        user: user._id,
+        orderItems: orderData.orderItems,
+        shippingAddress: orderData.shippingAddress,
+        paymentMethod: orderData.paymentMethod,
+        itemsPrice: orderData.itemsPrice,
+        shippingPrice: orderData.shippingPrice || 0,
+        taxPrice: orderData.taxPrice || 0,
+        totalPrice: orderData.totalPrice,
+      }
+      const response = await api.post('/api/orders', payload)
+      return response.data
+    } catch (error) {
+      const message = error.response?.data?.message || error.message || 'Failed to place order'
+      setError(message)
+      throw new Error(message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getOrders = async () => {
+    setOrdersLoading(true)
+    setError(null)
+    try {
+      if (!user?._id) {
+        setOrders([])
+        return
+      }
+      const response = await api.get("/api/orders/myorders")
+      const orderList = Array.isArray(response.data) ? response.data : response.data?.orders || []
+      setOrders(orderList)
+    } catch (err) {
+      const message = err.response?.data?.message || err.message || 'Failed to load orders'
+      setError(message)
+      setOrders([])
+    } finally {
+      setOrdersLoading(false)
+    }
+  }
+
   useEffect(() => {
       getAllProducts()
     }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, signup, logout, productsLoading, products, getAllProducts }}>
+    <AuthContext.Provider value={{ user, loading, error, login, signup, logout, productsLoading, products, getAllProducts, makeOrder, orders, ordersLoading, getOrders }}>
       {children}
     </AuthContext.Provider>
   )

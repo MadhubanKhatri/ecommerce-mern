@@ -3,6 +3,7 @@ const Order = require('../models/Order');
 
 const addOrderItems = async (req, res) => {
   try {
+    console.log("REQUEST by client: ",req.body)
     const {
       orderItems,
       shippingAddress,

@@ -13,6 +13,7 @@ export default function Header() {
         <Link to="/" className="text-xl font-semibold text-gray-800">ShopLogo</Link>
         <nav className="flex items-center gap-4">
           <Link to="/" className="text-gray-700 hover:text-gray-900">Home</Link>
+          {user && <Link to="/orders" className="text-gray-700 hover:text-gray-900">My Orders</Link>}
           <Link to="/cart" className="relative inline-flex items-center px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200">
             Cart
             <span className="ml-2 inline-flex items-center justify-center w-6 h-6 text-sm font-medium bg-amber-400 text-white rounded-full">{totalQty}</span>
