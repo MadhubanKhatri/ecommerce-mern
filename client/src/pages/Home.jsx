@@ -1,12 +1,16 @@
 import { useAuth } from '../hooks/useAuth'
 import { useEffect } from 'react'
 import ProductCard from '../components/products/ProductCard'
+import { useSearchParams } from 'react-router-dom'
 
 export default function Home() {
   const { products, getAllProducts, productsLoading } = useAuth()
+  const [searchParams] = useSearchParams();
+  const limit = searchParams.get("limit");
+  const page = searchParams.get("page");
 
   useEffect(() => {
-    getAllProducts()
+    getAllProducts(limit, page)
   }, [])
 
   return (

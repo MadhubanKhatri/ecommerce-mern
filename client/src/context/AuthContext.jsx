@@ -72,11 +72,12 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token')
   }
 
-  const getAllProducts = async () => {
+  const getAllProducts = async (limit=0,page=0) => {
     setProductsLoading(true)
     setError(null)
+    
     try {
-      const response = await api.get('/api/products')
+      const response = await api.get(`/api/products?limit=${limit}&page=${page}`)
       const payload = response.data
       const normalizedProducts = Array.isArray(payload)
         ? payload
