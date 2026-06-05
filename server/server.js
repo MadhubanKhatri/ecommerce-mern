@@ -24,9 +24,16 @@ app.use("/api/products", productRouters);
 app.use("/api/orders", orderRouters);
 
 
-const PORT = 5000;
-connectDb().then(()=>{
-    app.listen(PORT, ()=>{
-        console.log(`server is listening on ${PORT}`);
+// const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+connectDb()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`server is listening on ${PORT}`);
+        });
     })
-})
+    .catch((err) => {
+        console.error("Database connection error:");
+        console.error(err);
+    });
