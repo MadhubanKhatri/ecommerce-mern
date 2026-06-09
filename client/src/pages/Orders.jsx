@@ -61,6 +61,8 @@ export default function Orders() {
                   >
                     {order.status?.toUpperCase() || 'PENDING'}
                   </span>
+
+                  
                 </div>
               </div>
 

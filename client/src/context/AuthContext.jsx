@@ -1,9 +1,10 @@
 import { createContext, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
-
 export const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(false)
   const [productsLoading, setProductsLoading] = useState(false)
@@ -11,6 +12,7 @@ export function AuthProvider({ children }) {
   const [error, setError] = useState(null)
   const [products, setProducts] = useState([])
   const [orders, setOrders] = useState([])
+
 
   // Initialize user from localStorage on mount
   useEffect(() => {
@@ -32,7 +34,7 @@ export function AuthProvider({ children }) {
       setUser(authUser)
       localStorage.setItem('user', JSON.stringify(authUser))
       localStorage.setItem('token', token)
-        console.log("AUTH USER: ", authUser);
+  
       return authUser
     } catch (err) {
       const message = err.response?.data?.message || err.message || 'Login failed'
@@ -139,12 +141,61 @@ export function AuthProvider({ children }) {
     }
   }
 
+  const checkout = async (amount)=>{
+    try {
+      const response1 = await api.get("/api/v1/get-key");
+      const key = await response1.data.key;
+      
+      
+      const response2 = await api.post("/api/v1/payment-handller", {
+        amount: amount
+      })
+      const order = await response2.data.order
+
+      const options = {
+        key: key, 
+        amount: amount, 
+        currency: 'INR',
+        name: 'Test name',
+        description: 'Test Transaction',
+        order_id: order.id, 
+        handler: async function (response) {
+
+          const res = await api.post("/api/v1/paymentVerification",
+            response
+          );
+          if(res.data.status){
+            navigate(`/paymentSuccess?reference=${res.data.payment_id}`);
+
+          }else{
+            console.log("Payment Failed.")
+          }
+
+        },        
+        prefill: {
+          name: 'test Kumar',
+          email: 'test.kumar@example.com',
+          contact: '9999999999'
+        },
+        theme: {
+          color: '#F37254'
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+      return order;  
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
       getAllProducts()
     }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, signup, logout, productsLoading, products, getAllProducts, makeOrder, orders, ordersLoading, getOrders }}>
+    <AuthContext.Provider value={{ user, loading, error, login, signup, logout, productsLoading, products, getAllProducts, makeOrder, orders, ordersLoading, getOrders, checkout }}>
       {children}
     </AuthContext.Provider>
   )

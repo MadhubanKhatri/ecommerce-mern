@@ -17,7 +17,7 @@ export default function ProductCard({ product }) {
         <p className="text-sm text-gray-500 mt-1">{product.brand}</p>
         <div className="mt-3 flex items-center justify-between gap-3">
           <div>
-            <div className="text-xl font-bold">${product.price}</div>
+            <div className="text-xl font-bold">Rs. {product.price}</div>
             <div className="text-sm text-yellow-500">{product.rating} ★ ({product.numReviews} reviews)</div>
           </div>
           <button onClick={() => add(product)} className="px-3 py-1 bg-teal-500 text-white rounded-md hover:bg-teal-600">

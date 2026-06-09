@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 
 export default function CheckoutForm({ items, total, onSubmit, loading }) {
   const [formData, setFormData] = useState({
@@ -6,16 +7,18 @@ export default function CheckoutForm({ items, total, onSubmit, loading }) {
     city: '',
     postalCode: '',
     country: '',
-    paymentMethod: 'cod',
+    paymentMethod: 'cod'
   })
   const [formError, setFormError] = useState('')
+  const {checkout} = useAuth();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    const { name, value, checked } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))    
   }
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setFormError('')
 
@@ -46,6 +49,7 @@ export default function CheckoutForm({ items, total, onSubmit, loading }) {
     }
 
     onSubmit(orderData)
+    await checkout(total);
   }
 
   return (
@@ -116,11 +120,21 @@ export default function CheckoutForm({ items, total, onSubmit, loading }) {
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
           <option value="cod">Cash on Delivery</option>
-          <option value="card">Credit Card</option>
-          <option value="paypal">PayPal</option>
+          <option value="paynow">Pay Now</option>
         </select>
       </div>
-
+     
+     {
+      formData.paymentMethod == "paynow"
+      ?
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+      >
+        {loading ? 'Processing...' : 'Pay Now'}
+      </button>
+      :
       <button
         type="submit"
         disabled={loading}
@@ -128,6 +142,10 @@ export default function CheckoutForm({ items, total, onSubmit, loading }) {
       >
         {loading ? 'Placing Order...' : 'Place Order'}
       </button>
+     }
+     
+
+      
     </form>
   )
 }

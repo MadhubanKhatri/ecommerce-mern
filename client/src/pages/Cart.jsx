@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCartStore } from '../store/cartStore'
 import { useAuth } from '../hooks/useAuth'
 import CheckoutForm from '../components/checkout/CheckoutForm'
@@ -14,6 +14,7 @@ export default function CartPage() {
   const [orderPlaced, setOrderPlaced] = useState(false)
   const [orderError, setOrderError] = useState('')
 
+  
   const total = items.reduce((sum, it) => sum + Number(it.price || 0) * (it.quantity || 0), 0)
 
   const handleCheckout = async (orderData) => {
