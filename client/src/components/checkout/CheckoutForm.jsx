@@ -49,7 +49,9 @@ export default function CheckoutForm({ items, total, onSubmit, loading }) {
     }
 
     onSubmit(orderData)
-    await checkout(total);
+    if(formData.paymentMethod == "paynow"){     
+      await checkout(total);
+    }
   }
 
   return (

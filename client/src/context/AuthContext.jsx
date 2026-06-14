@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const [error, setError] = useState(null)
   const [products, setProducts] = useState([])
   const [orders, setOrders] = useState([])
-
+  const [total_pages, setTotalPages] = useState(null);
 
   // Initialize user from localStorage on mount
   useEffect(() => {
@@ -74,18 +74,21 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token')
   }
 
-  const getAllProducts = async (limit=0,page=0) => {
+  const getAllProducts = async (search_product="",page=0) => {
     setProductsLoading(true)
     setError(null)
+    console.log("Page: ",page);
     
     try {
-      const response = await api.get(`/api/products?limit=${limit}&page=${page}`)
+      const response = await api.get(`/api/products?search=${search_product}&page=${page}`)
       const payload = response.data
       const normalizedProducts = Array.isArray(payload)
         ? payload
         : Array.isArray(payload?.products)
         ? payload.products
         : []
+      
+      setTotalPages(payload.total_pages);
       setProducts(normalizedProducts)
     } catch (err) {
       const message = err.response?.data?.message || err.message || 'Failed to load products'
@@ -195,7 +198,7 @@ export function AuthProvider({ children }) {
     }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, signup, logout, productsLoading, products, getAllProducts, makeOrder, orders, ordersLoading, getOrders, checkout }}>
+    <AuthContext.Provider value={{ user, loading, error, login, signup, logout, productsLoading, products, getAllProducts, makeOrder, orders, ordersLoading, getOrders, checkout, total_pages }}>
       {children}
     </AuthContext.Provider>
   )

@@ -24,7 +24,6 @@ export default function CartPage() {
       setOrderPlaced(true)
       clear()
       setTimeout(() => {
-        alert(`Order placed successfully! Order ID: ${result._id}`)
         setOrderPlaced(false)
       }, 500)
     } catch (err) {
@@ -52,7 +51,7 @@ export default function CartPage() {
                     <img src={it.images?.[0] || it.image || 'https://via.placeholder.com/80'} alt={it.name} className="w-16 h-16 object-cover rounded" />
                     <div>
                       <div className="font-semibold">{it.name}</div>
-                      <div className="text-sm text-gray-600">Unit: ${Number(it.price).toFixed(2)}</div>
+                      <div className="text-sm text-gray-600">Unit: Rs.{Number(it.price).toFixed(2)}</div>
                     </div>
                   </div>
                   <div className="text-right flex items-center gap-4">
@@ -62,7 +61,7 @@ export default function CartPage() {
                       <button onClick={() => add(it)} className="px-3 py-1 bg-gray-100 hover:bg-gray-200">+</button>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold">${(Number(it.price) * (it.quantity || 0)).toFixed(2)}</div>
+                      <div className="font-bold">Rs.{(Number(it.price) * (it.quantity || 0)).toFixed(2)}</div>
                       <button onClick={() => remove(id)} className="text-sm text-red-600 mt-2">Remove</button>
                     </div>
                   </div>
@@ -80,19 +79,19 @@ export default function CartPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>Rs.{total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>$0.00</span>
+                  <span>Rs.0.00</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax</span>
-                  <span>$0.00</span>
+                  <span>Rs.0.00</span>
                 </div>
                 <div className="border-t pt-3 flex justify-between font-bold">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>Rs.{total.toFixed(2)}</span>
                 </div>
               </div>
             </div>

@@ -47,7 +47,7 @@ export default function Orders() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold text-teal-600">${Number(order.totalPrice || 0).toFixed(2)}</p>
+                  <p className="text-lg font-bold text-teal-600">Rs.{Number(order.totalPrice || 0).toFixed(2)}</p>
                   <span
                     className={`inline-block mt-2 px-3 py-1 text-xs font-semibold rounded-full ${
                       order.status === 'delivered'
@@ -73,7 +73,7 @@ export default function Orders() {
                   {order.orderItems?.slice(0, 2).map((item, idx) => (
                     <div key={idx} className="text-sm text-gray-600 flex justify-between">
                       <span>{item.name} x {item.qty}</span>
-                      <span>${Number(item.price * item.qty).toFixed(2)}</span>
+                      <span>Rs.{Number(item.price * item.qty).toFixed(2)}</span>
                     </div>
                   ))}
                   {order.orderItems?.length > 2 && (
@@ -94,21 +94,21 @@ export default function Orders() {
               <div className="grid grid-cols-3 gap-4 mb-4 text-sm border-t pt-4">
                 <div>
                   <p className="text-gray-600">Subtotal</p>
-                  <p className="font-semibold">${Number(order.itemsPrice || 0).toFixed(2)}</p>
+                  <p className="font-semibold">Rs.{Number(order.itemsPrice || 0).toFixed(2)}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Shipping</p>
-                  <p className="font-semibold">${Number(order.shippingPrice || 0).toFixed(2)}</p>
+                  <p className="font-semibold">Rs.{Number(order.shippingPrice || 0).toFixed(2)}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Tax</p>
-                  <p className="font-semibold">${Number(order.taxPrice || 0).toFixed(2)}</p>
+                  <p className="font-semibold">Rs.{Number(order.taxPrice || 0).toFixed(2)}</p>
                 </div>
               </div>
 
               {/* Payment Method */}
               <div className="text-sm mb-4 p-3 bg-gray-50 rounded">
-                <p className="text-gray-600">Payment Method: <span className="font-semibold">{order.paymentMethod?.replace(/([A-Z])/g, ' $1').trim() || 'N/A'}</span></p>
+                <p className="text-gray-600">Payment Method: <span className="font-semibold">{order.paymentMethod?.replace(/([A-Z])/g, ' Rs.1').trim() || 'N/A'}</span></p>
               </div>
 
               {/* Action Button */}
@@ -134,8 +134,8 @@ export default function Orders() {
                         <div className="flex-1">
                           <p className="font-semibold">{item.name}</p>
                           <p className="text-gray-600">Quantity: {item.qty}</p>
-                          <p className="text-gray-600">Price: ${Number(item.price).toFixed(2)} each</p>
-                          <p className="font-semibold text-teal-600">Total: ${Number(item.price * item.qty).toFixed(2)}</p>
+                          <p className="text-gray-600">Price: Rs.{Number(item.price).toFixed(2)} each</p>
+                          <p className="font-semibold text-teal-600">Total: Rs.{Number(item.price * item.qty).toFixed(2)}</p>
                         </div>
                       </div>
                     ))}

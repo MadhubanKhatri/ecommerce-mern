@@ -1,11 +1,28 @@
 import { Link } from 'react-router-dom'
 import { useCartStore } from '../../store/cartStore'
 import { useAuth } from '../../hooks/useAuth'
+import { useState, useEffect } from 'react'
 
 export default function Header() {
   const items = useCartStore((s) => s.items)
   const totalQty = items.reduce((sum, it) => sum + it.quantity, 0)
-  const { user, logout } = useAuth()
+  const { user, logout, getAllProducts } = useAuth()
+  const [search_query, setSearchQuery] = useState("");
+
+  // Deboucing 
+  useEffect(() => {
+
+      const timer = setTimeout(() => {
+        if(search_query.trim()) {
+            getAllProducts(search_query);
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+
+    }, [search_query]);
+  
+
 
   return (
     <header className="bg-white shadow">
@@ -14,6 +31,16 @@ export default function Header() {
         <nav className="flex items-center gap-4">
           <Link to="/" className="text-gray-700 hover:text-gray-900">Home</Link>
           {user && <Link to="/orders" className="text-gray-700 hover:text-gray-900">My Orders</Link>}
+          <div className="relative">
+            <input
+              type="text"
+              name="search_products"
+              value={search_query}
+              onChange={(e)=>setSearchQuery(e.target.value)}
+              placeholder="Search products"
+              className="w-100 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+            />
+          </div>
           <Link to="/cart" className="relative inline-flex items-center px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200">
             Cart
             <span className="ml-2 inline-flex items-center justify-center w-6 h-6 text-sm font-medium bg-amber-400 text-white rounded-full">{totalQty}</span>

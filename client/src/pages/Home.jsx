@@ -1,17 +1,19 @@
 import { useAuth } from '../hooks/useAuth'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ProductCard from '../components/products/ProductCard'
 import { useSearchParams } from 'react-router-dom'
 
 export default function Home() {
-  const { products, getAllProducts, productsLoading } = useAuth()
-  const [searchParams] = useSearchParams();
-  const limit = searchParams.get("limit");
-  const page = searchParams.get("page");
+  const { products, getAllProducts, productsLoading, total_pages } = useAuth()
+  const [searchParams] = useSearchParams();  
+  const [currentPage, setCurrentPage] = useState(1);
+
 
   useEffect(() => {
-    getAllProducts(limit, page)
-  }, [])
+    console.log(currentPage);
+    
+    getAllProducts("", currentPage)
+  }, [currentPage])
 
   return (
     <div>
@@ -24,6 +26,31 @@ export default function Home() {
         ) : (
           <div className="col-span-full text-center text-gray-600">No products found.</div>
         )}
+      </div>
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <nav className="inline-flex items-center rounded-md bg-white shadow-sm">
+          <button className="rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          disabled={currentPage==1}
+          onClick={()=>setCurrentPage(currentPage-1)}>
+            Previous
+          </button>
+          <div className="hidden sm:flex items-center divide-x divide-gray-200">
+            {
+                [...Array(total_pages)].map((_, index) => (
+                  <button key={index} onClick={()=>setCurrentPage(index+1)} className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    {index + 1}
+                  </button>
+          
+                ))
+            }            
+          </div>
+          <button className="rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          disabled={currentPage==total_pages}
+          onClick={()=>setCurrentPage(currentPage+1)}>
+            Next
+          </button>
+        </nav>
+        <p className="text-sm text-gray-500">Showing page 1 of {total_pages}</p>
       </div>
     </div>
   )

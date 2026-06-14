@@ -3,9 +3,9 @@ const Product = require('../models/Product');
 
 const getProducts = async (req, res) => {
   try {
-    const pageSize = Number(req.query.limit) || 10;
+    const pageSize = 10;
     const page = Number(req.query.page) || 1;
-
+    
     const keyword = req.query.search
       ? { name: { $regex: req.query.search, $options: 'i' } }
       : {};
@@ -15,14 +15,15 @@ const getProducts = async (req, res) => {
       : {};
 
     const filter = { ...keyword, ...categoryFilter };
-
+    
+    
     const count = await Product.countDocuments(filter);
     const products = await Product.find(filter)
       .populate('category')
       .limit(pageSize)
       .skip(pageSize * (page - 1));
-
-    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+    
+    res.json({ products, page_number: page, total_pages: Math.ceil(count / pageSize) });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error while fetching products.' });
