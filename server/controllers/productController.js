@@ -58,7 +58,7 @@ const createProduct = async (req, res) => {
       category,
       brand: brand || '',
       countInStock: countInStock || 0,
-      images: images || [],
+      images: images || "",
     });
 
     const created = await product.save();
