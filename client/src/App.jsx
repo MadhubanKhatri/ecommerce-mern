@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-import NotFound from "./pages/NotFound";
 import { lazy, Suspense  } from 'react'
 
 const Home = lazy(()=>import("./pages/Home"));
@@ -10,6 +9,7 @@ const ProductDetail = lazy(()=>import("./pages/ProductDetail"));
 const CartPage = lazy(()=>import("./pages/Cart"));
 const Orders = lazy(()=>import("./pages/Orders"));
 const PaymentSuccess = lazy(()=>import("./pages/PaymentSuccess"));
+const NotFound = lazy(()=>import("./pages/NotFound"));
 
 function App() {
   return (
@@ -40,7 +40,11 @@ function App() {
             <PaymentSuccess />
           </Suspense>
           } />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={
+          <Suspense fallback={<h2>Loading...</h2>}>
+            <NotFound />
+          </Suspense>
+          } />
       </Routes>
     </Layout>
   )
