@@ -5,7 +5,7 @@ const getProducts = async (req, res) => {
   try {
     const pageSize = 10;
     const page = Number(req.query.page) || 1;
-    
+    console.log("REQUEST query: ",req.query);
     const keyword = req.query.search
       ? { name: { $regex: req.query.search, $options: 'i' } }
       : {};

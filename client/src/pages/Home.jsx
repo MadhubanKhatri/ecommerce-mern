@@ -5,13 +5,13 @@ import { useSearchParams } from 'react-router-dom'
 
 export default function Home() {
   const { products, getAllProducts, productsLoading, total_pages } = useAuth()
-  const [searchParams] = useSearchParams();  
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();  
+  const currentPage = Number(searchParams.get("page")) || 1;
 
-
+  const changePage = (page)=>{
+    setSearchParams({page})
+  }
   useEffect(() => {
-    console.log(currentPage);
-    
     getAllProducts("", currentPage)
   }, [currentPage])
 
@@ -31,13 +31,13 @@ export default function Home() {
         <nav className="inline-flex items-center rounded-md bg-white shadow-sm">
           <button className="rounded-l-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           disabled={currentPage==1}
-          onClick={()=>setCurrentPage(currentPage-1)}>
+          onClick={()=>changePage(currentPage - 1)}>
             Previous
           </button>
           <div className="hidden sm:flex items-center divide-x divide-gray-200">
             {
                 [...Array(total_pages)].map((_, index) => (
-                  <button key={index} onClick={()=>setCurrentPage(index+1)} className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <button key={index} onClick={()=>changePage(index+1)} className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     {index + 1}
                   </button>
           
@@ -46,7 +46,7 @@ export default function Home() {
           </div>
           <button className="rounded-r-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           disabled={currentPage==total_pages}
-          onClick={()=>setCurrentPage(currentPage+1)}>
+          onClick={()=>changePage(currentPage + 1)}>
             Next
           </button>
         </nav>

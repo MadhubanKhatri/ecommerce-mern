@@ -11,11 +11,9 @@ export default function Header() {
 
   // Deboucing 
   useEffect(() => {
-
+      console.log("search_query: ",search_query=="");
       const timer = setTimeout(() => {
-        if(search_query.trim()) {
-            getAllProducts(search_query);
-        }
+        getAllProducts(search_query);
       }, 1000);
 
       return () => clearTimeout(timer);

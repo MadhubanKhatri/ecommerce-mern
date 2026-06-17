@@ -77,8 +77,7 @@ export function AuthProvider({ children }) {
   const getAllProducts = async (search_product="",page=0) => {
     setProductsLoading(true)
     setError(null)
-    console.log("Page: ",page);
-    
+  
     try {
       const response = await api.get(`/api/products?search=${search_product}&page=${page}`)
       const payload = response.data
